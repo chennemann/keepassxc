@@ -16,6 +16,9 @@
  */
 
 #include "UrlTools.h"
+#if defined(KPXC_FEATURE_BROWSER)
+#include "fork/browser/AdditionalUrlQueryMatcher.h"
+#endif
 #if defined(KPXC_FEATURE_NETWORK) || defined(KPXC_FEATURE_BROWSER)
 #include <QHostAddress>
 #include <QNetworkCookie>
@@ -165,6 +168,12 @@ bool UrlTools::isUrlValid(const QString& urlField, bool looseComparison)
             url.remove(0, 1);
             url.chop(1);
         } else {
+#if defined(KPXC_FEATURE_BROWSER)
+            if (!Fork::AdditionalUrlQueryMatcher::isPatternValid(url)) {
+                return false;
+            }
+#endif
+
             // Do not allow URL with just wildcards, or double wildcards
             if (url.length() == url.count("*") || url.contains("**") || url.contains("*.*")) {
                 return false;

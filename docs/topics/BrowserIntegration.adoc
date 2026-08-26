@@ -146,6 +146,8 @@ https://example.com/*/path
 https://sub.*.example.com/path/*
 ----
 
+include::fork/AdditionalUrlQueryMatching.adoc[]
+
 .Entry browser settings
 image::browser_entry_settings.png[]
 

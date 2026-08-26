@@ -37,5 +37,6 @@ if(KPXC_FEATURE_BROWSER)
             PasskeyUtils.cpp)
 
     add_library(browser STATIC ${browser_SOURCES})
+    add_subdirectory("${PROJECT_SOURCE_DIR}/src/fork/browser" "${PROJECT_BINARY_DIR}/src/fork/browser")
     target_link_libraries(browser Qt6::Core Qt6::Concurrent Qt6::Widgets Qt6::Network ${BOTAN_LIBRARIES})
 endif()

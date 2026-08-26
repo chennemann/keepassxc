@@ -170,6 +170,8 @@ if(KPXC_FEATURE_BROWSER)
 
     add_unit_test(NAME testpasskeys SOURCES TestPasskeys.cpp
         LIBS browser ${TEST_LIBRARIES})
+
+    add_subdirectory(fork)
 endif()
 
 if(KPXC_FEATURE_NETWORK OR KPXC_FEATURE_BROWSER)

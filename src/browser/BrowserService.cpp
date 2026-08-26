@@ -30,6 +30,7 @@
 #include "PasskeyUtils.h"
 #include "core/EntryAttributes.h"
 #include "core/Tools.h"
+#include "fork/browser/AdditionalUrlQueryMatcher.h"
 #include "gui/MainWindow.h"
 #include "gui/MessageBox.h"
 #include "gui/UrlTools.h"
@@ -1533,6 +1534,10 @@ bool BrowserService::handleURL(const QString& entryUrl,
     // Check for illegal characters
     QRegularExpression re("[<>\\^`{|}]");
     if (re.match(entryUrl).hasMatch()) {
+        return false;
+    }
+
+    if (allowWildcards && !Fork::AdditionalUrlQueryMatcher::matches(entryUrl, siteQUrl)) {
         return false;
     }
 
