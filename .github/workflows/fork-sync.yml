@@ -1,0 +1,81 @@
+name: Fork upstream rebase
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fork-upstream-rebase
+  cancel-in-progress: false
+
+env:
+  FORK_BRANCH: fork
+  UPSTREAM_BRANCH: develop
+  UPSTREAM_REPOSITORY: keepassxreboot/keepassxc
+
+jobs:
+  rebase:
+    name: Rebase fork onto upstream/develop
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Refuse to run in the upstream repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REPOSITORY" == "$UPSTREAM_REPOSITORY" ]]; then
+            echo "This workflow is only intended for a downstream fork." >&2
+            exit 1
+          fi
+
+      - name: Checkout fork branch
+        uses: actions/checkout@v6
+        with:
+          ref: fork
+          fetch-depth: 0
+
+      - id: sync
+        name: Rebase and update fork branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_origin="https://github.com/${GITHUB_REPOSITORY}.git"
+          origin_url="$(git remote get-url origin)"
+          if [[ "$origin_url" != "$expected_origin" && "$origin_url" != "${expected_origin%.git}" ]]; then
+            echo "Refusing to push: origin is '$origin_url', expected '$expected_origin'." >&2
+            exit 1
+          fi
+
+          upstream_url="https://github.com/${UPSTREAM_REPOSITORY}.git"
+          git remote add upstream "$upstream_url"
+          git fetch --no-tags upstream "$UPSTREAM_BRANCH"
+          git fetch --no-tags origin "$FORK_BRANCH"
+
+          before="$(git rev-parse HEAD)"
+          remote_before="$(git rev-parse "origin/${FORK_BRANCH}")"
+          if [[ "$before" != "$remote_before" ]]; then
+            echo "Checkout $before is not current origin/${FORK_BRANCH} $remote_before." >&2
+            exit 1
+          fi
+
+          updated=false
+          if git merge-base --is-ancestor "upstream/${UPSTREAM_BRANCH}" HEAD; then
+            echo "fork already contains current upstream/${UPSTREAM_BRANCH}."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git rebase "upstream/${UPSTREAM_BRANCH}"
+            after="$(git rev-parse HEAD)"
+            git merge-base --is-ancestor "upstream/${UPSTREAM_BRANCH}" "$after"
+            git push \
+              --force-with-lease="refs/heads/${FORK_BRANCH}:${before}" \
+              origin \
+              "HEAD:refs/heads/${FORK_BRANCH}"
+            echo "Rebased ${FORK_BRANCH}: ${before} -> ${after}"
+            updated=true
+          fi
+          echo "updated=$updated" >> "$GITHUB_OUTPUT"
