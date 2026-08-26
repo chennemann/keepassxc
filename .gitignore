@@ -31,3 +31,5 @@ out/
 # vcpkg
 vcpkg_installed*/
 
+# Python helpers used by fork automation
+/.github/scripts/__pycache__/
