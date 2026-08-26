@@ -16,6 +16,9 @@
  */
 
 #include "UrlTools.h"
+#if defined(WITH_XC_BROWSER)
+#include "fork/browser/AdditionalUrlQueryMatcher.h"
+#endif
 #if defined(WITH_XC_NETWORKING) || defined(WITH_XC_BROWSER)
 #include <QHostAddress>
 #include <QNetworkCookie>
@@ -171,6 +174,12 @@ bool UrlTools::isUrlValid(const QString& urlField, bool looseComparison) const
             url.remove(0, 1);
             url.remove(url.length() - 1, 1);
         } else {
+#if defined(WITH_XC_BROWSER)
+            if (!Fork::AdditionalUrlQueryMatcher::isPatternValid(url)) {
+                return false;
+            }
+#endif
+
             // Do not allow URL with just wildcards, or double wildcards
             if (url.length() == url.count("*") || url.contains("**") || url.contains("*.*")) {
                 return false;

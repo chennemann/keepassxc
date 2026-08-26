@@ -42,5 +42,6 @@ if(WITH_XC_BROWSER)
     endif()
 
     add_library(keepassxcbrowser STATIC ${keepassxcbrowser_SOURCES})
+    add_subdirectory("${PROJECT_SOURCE_DIR}/src/fork/browser" "${PROJECT_BINARY_DIR}/src/fork/browser")
     target_link_libraries(keepassxcbrowser Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network ${BOTAN_LIBRARIES})
 endif()

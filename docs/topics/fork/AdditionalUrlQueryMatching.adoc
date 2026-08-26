@@ -1,0 +1,32 @@
+Additional URLs can also require query parameters. Query parameters may appear in any order or position, and the visited URL may contain unrelated parameters. All parameters declared by the Additional URL are required:
+----
+https://example.com/login?tenant=acme*&mode=admin&client_id=123
+----
+
+Query parameter names are exact and case-sensitive; wildcards are not supported in names. Values are also case-sensitive and support the following anchored wildcard forms:
+
+[cols="1,2"]
+|===
+|Pattern |Meaning
+
+|`name=value`
+|Exact value
+
+|`name=value*`
+|Starts with `value`
+
+|`name=*value`
+|Ends with `value`
+
+|`name=*value*`
+|Contains `value`
+
+|`name=*`
+|The parameter must be present with any value, including an empty value
+|===
+
+When a parameter name occurs more than once in the visited URL, any matching occurrence can satisfy a constraint. If the Additional URL repeats a parameter, each constraint requires a distinct occurrence in the visited URL. Query names and values are compared in their normalized, fully encoded form. Percent-encoded delimiters such as `%26` and `%3D` therefore remain part of a value rather than becoming separators; `%2F` remains distinct from `/`, and `%20` remains distinct from `+`.
+
+An Additional URL without query constraints continues to ignore the visited URL's query. To require strict full-URL equality instead, wrap the Additional URL in double quotes. Quoted URLs compare the query string exactly, including parameter order and encoding, and cannot contain wildcards. URL fragments are not used by wildcard query matching.
+
+WARNING: Query strings can contain sensitive values such as authorization codes, OAuth state, and access tokens. Store only the minimum query constraints needed for matching.

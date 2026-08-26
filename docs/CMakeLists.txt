@@ -26,6 +26,7 @@ set(REV -a revnumber=${KEEPASSXC_VERSION})
 # Build html documentation on all platforms
 # NOTE: Combine into one long command to prevent MSVC from failing to build all docs
 file(GLOB doc_depends ${DOC_DIR}/*.adoc ${DOC_DIR}/topics/* ${DOC_DIR}/styles/* ${DOC_DIR}/images/*)
+add_subdirectory(topics/fork)
 add_custom_command(
     OUTPUT KeePassXC_GettingStarted.html KeePassXC_UserGuide.html KeePassXC_KeyboardShortcuts.html
     COMMAND

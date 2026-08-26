@@ -18,6 +18,26 @@ checkout.
 - Fetch and rebase onto upstream `develop` locally when the user requests an
   update. Resolve and verify the rebase locally before pushing `fork`.
 
+## Downstream feature isolation
+
+- Treat fork-only application features as permanent downstream work. Put their
+  substantive implementation under `src/fork`, their focused test
+  implementation under `tests/fork`, and their documentation bodies under
+  `docs/topics/fork`.
+- Keep edits to upstream-owned files to narrow, stable integration hooks. Do
+  not place fork-only algorithms, large test matrices, or long documentation
+  sections directly in upstream files when a fork-owned module or included
+  file can contain them.
+- Prefer fork-owned CMake subdirectories that extend existing targets with
+  `target_sources()`. Upstream CMake files should contain only the smallest
+  practical `add_subdirectory()` hook.
+- Preserve upstream behavior on both sides of a fork hook. Fork modules should
+  add only the downstream behavior and must not copy or take ownership of the
+  surrounding upstream matching or application flow.
+- Continue testing fork behavior through the existing upstream seam where
+  practical. Split test method implementations into `tests/fork` rather than
+  weakening coverage merely to reduce the merge area.
+
 ## Fork releases
 
 Build fork releases locally so they do not consume GitHub Actions build

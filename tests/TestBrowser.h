@@ -46,6 +46,9 @@ private slots:
     void testSearchEntriesWithPort();
     void testSearchEntriesWithAdditionalURLs();
     void testSearchEntriesWithWildcardURLs();
+    void testAdditionalUrlQueryMatching();
+    void testAdditionalUrlQueryMatching_data();
+    void testMainEntryQueryMatchingUnchanged();
     void testInvalidEntries();
     void testSubdomainsAndPaths();
     void testBestMatchingCredentials();

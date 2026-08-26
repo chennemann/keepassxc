@@ -27,6 +27,7 @@
 #include "core/EntryAttributes.h"
 #include "core/Tools.h"
 #include "core/UrlTools.h"
+#include "fork/browser/AdditionalUrlQueryMatcher.h"
 #include "gui/MainWindow.h"
 #include "gui/MessageBox.h"
 #include "gui/osutils/OSUtils.h"
@@ -1614,6 +1615,10 @@ bool BrowserService::handleURL(const QString& entryUrl,
     // Check for illegal characters
     QRegularExpression re("[<>\\^`{|}]");
     if (re.match(entryUrl).hasMatch()) {
+        return false;
+    }
+
+    if (allowWildcards && !Fork::AdditionalUrlQueryMatcher::matches(entryUrl, siteQUrl)) {
         return false;
     }
 

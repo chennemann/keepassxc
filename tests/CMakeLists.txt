@@ -240,6 +240,8 @@ if(WITH_XC_BROWSER)
                     LIBS keepassxcbrowser ${TEST_LIBRARIES})
         endif()
     endif()
+
+    add_subdirectory(fork)
 endif()
 
 if(WITH_XC_NETWORKING OR WITH_XC_BROWSER)
