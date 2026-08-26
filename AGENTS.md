@@ -12,8 +12,11 @@ checkout.
 - `origin` must refer to `chennemann/keepassxc` and `upstream` to
   `keepassxreboot/keepassxc`.
 - Upstream's mainline is `develop`, not `master`.
-- The lightweight `.github/workflows/fork-sync.yml` workflow may rebase
-  `fork` onto upstream `develop`. Do not add or enable hosted build workflows.
+- GitHub Actions is intentionally disabled and `.github/workflows` must remain
+  empty. Do not add or enable any hosted workflow unless the user explicitly
+  reverses this decision.
+- Fetch and rebase onto upstream `develop` locally when the user requests an
+  update. Resolve and verify the rebase locally before pushing `fork`.
 
 ## Fork releases
 
