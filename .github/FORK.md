@@ -2,7 +2,8 @@
 
 This repository keeps downstream changes on the `fork` branch. KeePassXC does
 not have a `master` branch; its upstream mainline is
-`keepassxreboot/keepassxc:develop`, so that is the rebase base used here.
+`keepassxreboot/keepassxc:develop`. Release rebases use the requested upstream
+release tag.
 
 The `Fork upstream rebase` workflow runs every three hours. It fetches the
 upstream `develop` branch and rebases `fork` onto it. The update uses
@@ -10,8 +11,9 @@ upstream `develop` branch and rebases `fork` onto it. The update uses
 remote branch. It never starts a hosted build.
 
 Releases are built locally to avoid spending hosted GitHub Actions minutes. On
-Windows, run the following from Git Bash (the first build can bootstrap a local
-Qt installation):
+Windows, install the Visual Studio 2022 C++ build tools with the ATL and MFC
+components, then run the following from Git Bash. Qt 5 and the other build
+dependencies are installed by vcpkg automatically:
 
 ```bash
 powershell.exe -NoProfile -ExecutionPolicy Bypass \
