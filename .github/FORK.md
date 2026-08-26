@@ -5,10 +5,10 @@ not have a `master` branch; its upstream mainline is
 `keepassxreboot/keepassxc:develop`. Release rebases use the requested upstream
 release tag.
 
-The `Fork upstream rebase` workflow runs every three hours. It fetches the
-upstream `develop` branch and rebases `fork` onto it. The update uses
-`--force-with-lease`, and a conflict fails the workflow without changing the
-remote branch. It never starts a hosted build.
+GitHub Actions is disabled for this fork and the repository contains no
+workflow definitions. Upstream updates are fetched, rebased, and verified
+locally before `fork` is pushed. This keeps rebases and builds off GitHub's
+hosted runners.
 
 Releases are built locally to avoid spending hosted GitHub Actions minutes. On
 Windows, install the Visual Studio 2022 C++ build tools with the ATL and MFC
