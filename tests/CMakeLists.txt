@@ -240,9 +240,9 @@ if(WITH_XC_BROWSER)
                     LIBS keepassxcbrowser ${TEST_LIBRARIES})
         endif()
     endif()
-
-    add_subdirectory(fork)
 endif()
+
+add_subdirectory(fork)
 
 if(WITH_XC_NETWORKING OR WITH_XC_BROWSER)
     add_unit_test(NAME testurltools SOURCES TestUrlTools.cpp LIBS ${TEST_LIBRARIES})

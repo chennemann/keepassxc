@@ -29,3 +29,6 @@ tag and GitHub release. Versions use the numeric KeePassXC version from
 Use `-ResolveOnly` to inspect the next version without building or publishing.
 
 Fork releases are not official KeePassXC builds and are intentionally unsigned.
+
+The optional [Current TOTP column](../docs/topics/fork/CurrentTotpColumn.adoc)
+shows live one-time passwords in the entry list and search results.

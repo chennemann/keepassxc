@@ -351,6 +351,7 @@ add_library(autotype STATIC ${autotype_SOURCES})
 target_link_libraries(autotype Qt5::Core Qt5::Widgets)
 
 add_library(keepassx_core STATIC ${keepassx_SOURCES})
+add_subdirectory(fork/gui)
 
 set_target_properties(keepassx_core PROPERTIES COMPILE_DEFINITIONS KEEPASSX_BUILDING_CORE)
 target_link_libraries(keepassx_core

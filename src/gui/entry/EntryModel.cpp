@@ -16,6 +16,7 @@
  */
 
 #include "EntryModel.h"
+#include "fork/gui/CurrentTotpColumn.h"
 
 #include <QFont>
 #include <QMimeData>
@@ -116,7 +117,7 @@ int EntryModel::columnCount(const QModelIndex& parent) const
         return 0;
     }
 
-    return 17;
+    return 18;
 }
 
 QVariant EntryModel::data(const QModelIndex& index, int role) const
@@ -203,6 +204,8 @@ QVariant EntryModel::data(const QModelIndex& index, int role) const
         case Modified:
             result = Clock::toString(entry->timeInfo().lastModificationTime().toLocalTime());
             return result;
+        case CurrentTotp:
+            return Fork::CurrentTotpColumn::token(entry);
         case Attachments: {
             // Display comma-separated list of attachments
             QList<QString> attachments = entry->attachments()->keys();
@@ -395,6 +398,8 @@ QVariant EntryModel::headerData(int section, Qt::Orientation orientation, int ro
             return tr("Created");
         case Modified:
             return tr("Modified");
+        case CurrentTotp:
+            return tr("Current TOTP");
         case Attachments:
             return tr("Attachments");
         case Size:

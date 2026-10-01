@@ -1412,6 +1412,7 @@ void DatabaseWidget::entryActivationSignalReceived(Entry* entry, EntryModel::Mod
             switchToEntryEdit(entry);
         }
         break;
+    case EntryModel::CurrentTotp:
     case EntryModel::Totp:
         if (entry->hasValidTotp()) {
             setClipboardTextAndMinimize(entry->totp());

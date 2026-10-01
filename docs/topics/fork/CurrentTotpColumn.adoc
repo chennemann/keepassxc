@@ -1,0 +1,10 @@
+=== Current TOTP column
+
+Right-click a column heading in the main entry list and enable *Current TOTP*
+to display each entry's current one-time password. This also works in search
+results. The column refreshes automatically and uses each entry's configured
+period and token format. Entries without a valid TOTP configuration are blank.
+
+Double-click a token to copy it using the existing TOTP clipboard behavior.
+The column is hidden by default, and its visibility is saved with the list
+layout. Enabling it displays the tokens even while the Password column is masked.

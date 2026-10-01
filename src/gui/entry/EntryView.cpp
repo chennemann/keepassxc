@@ -17,6 +17,7 @@
  */
 
 #include "EntryView.h"
+#include "fork/gui/CurrentTotpColumn.h"
 
 #include <QAccessible>
 #include <QDrag>
@@ -77,6 +78,7 @@ EntryView::EntryView(QWidget* parent)
     // Use Qt::UserRole as sort role, see EntryModel::data()
     m_sortModel->setSortRole(Qt::UserRole);
     QTreeView::setModel(m_sortModel);
+    Fork::CurrentTotpColumn::installRefresh(m_model, this);
     QTreeView::setItemDelegateForColumn(EntryModel::PasswordStrength, new PasswordStrengthItemDelegate(this));
 
     setUniformRowHeights(true);
@@ -338,7 +340,7 @@ bool EntryView::setViewState(const QByteArray& state)
 {
     // Reset to unsorted first (https://bugreports.qt.io/browse/QTBUG-86694)
     header()->setSortIndicator(-1, Qt::AscendingOrder);
-    bool status = header()->restoreState(state);
+    bool status = Fork::CurrentTotpColumn::restoreState(header(), state);
     resetFixedColumns();
     m_columnsNeedRelayout = state.isEmpty();
     onHeaderChanged();
@@ -479,6 +481,7 @@ void EntryView::resetViewToDefaults()
     header()->showSection(EntryModel::Paperclip);
     header()->showSection(EntryModel::Totp);
 
+    header()->hideSection(EntryModel::CurrentTotp);
     header()->hideSection(EntryModel::Password);
     header()->hideSection(EntryModel::Expires);
     header()->hideSection(EntryModel::Created);
